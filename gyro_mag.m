@@ -28,7 +28,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   nx = 4;   % Assuming that you use q as state variable.
 
   % Add your filter settings here.
-  Some_random_noise = 0.01;
+  Some_random_noise = 0.0001; 
 
   % Define constants gyro
   Rw = diag([0.1546e-4, 0.3164e-4, 0.01e-4]);
@@ -37,8 +37,8 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   Rm = diag([0.1124, 0.1905, 0.1273]);
   m = [-0.7002; 10.8121; -43.4096];
   m0 = [0; sqrt(m(1)^2+m(2)^2); m(3)]; 
-  alpha = 0.05;
-  outlier_mag = 0.3;
+  alpha = 0.02;
+  outlier_mag = 0.1;
   Lk = norm(m0);
   ub_mag = Lk*(1 + outlier_mag);
   lb_mag = Lk*(1 - outlier_mag);
@@ -112,8 +112,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
             [x, P] = mu_normalizeQ(x, P);
             magOut = 0;
         end
-      else
-        P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the next step
       end
 
       orientation = data(1, 18:21)';  % Google's orientation estimate.

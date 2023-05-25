@@ -28,12 +28,11 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   nx = 4;   % Assuming that you use q as state variable.
 
   % Add your filter settings here.
-  Some_random_noise = 0.01;
 
   % Define constants acc
   g0 = [0.6338; 0.2853; 9.8379];
   L = norm(g0);
-  outlier_acc = 0.3; % Look for outliers 50 % larger and smaller of the acc measurement
+  outlier_acc = 0.2; % Look for outliers 50 % larger and smaller of the acc measurement
   ub_acc = L*(1 + outlier_acc);
   lb_acc = L*(1 - outlier_acc);
   Ra = diag([0.0002, 0.0001, 0.0011]);
@@ -42,8 +41,8 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   Rm = diag([0.1124, 0.1905, 0.1273]);
   m = [-0.7002; 10.8121; -43.4096];
   m0 = [0; sqrt(m(1)^2+m(2)^2); m(3)]; 
-  alpha = 0.05;
-  outlier_mag = 0.3;
+  alpha = 0.02;
+  outlier_mag = 0.1;
   Lk = norm(m0);
   ub_mag = Lk*(1 + outlier_mag);
   lb_mag = Lk*(1 - outlier_mag);
@@ -105,8 +104,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
             [x, P] = mu_normalizeQ(x, P);
             accOut = 0;
           end
-      else
-        P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the next step
       end
 
       gyr = data(1, 5:7)';

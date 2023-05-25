@@ -1,6 +1,3 @@
-
-
-
 function [x, P] = mu_g(x, P, yacc, Ra, g0)
 
 hx = Qq(x)'*g0;

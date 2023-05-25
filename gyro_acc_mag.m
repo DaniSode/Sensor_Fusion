@@ -45,8 +45,8 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   Rm = diag([0.1124, 0.1905, 0.1273]); % Process noise covariance matrix
   m = [-0.7002; 10.8121; -43.4096]; % Mean of acc data
   m0 = [0; sqrt(m(1)^2+m(2)^2); m(3)];  
-  alpha = 0.01;
-  outlier_mag = 0.2; % Look for outliers 20 % larger and smaller of the acc measurement
+  alpha = 0.02;
+  outlier_mag = 0.1; % Look for outliers 20 % larger and smaller of the acc measurement
   Lk = norm(m0); 
   ub_mag = Lk*(1 + outlier_mag); % Upper bound
   lb_mag = Lk*(1 - outlier_mag); % Lower bound
@@ -117,8 +117,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
             [x, P] = mu_normalizeQ(x, P);   % Normalize the quaternion
             accOut = 0;
           end
-%       else
-%         P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the state
       end
       
       % Set magOut to 1
@@ -132,8 +130,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
             [x, P] = mu_normalizeQ(x, P);   % Normalize the quaternion
             magOut = 0;     % Set magOut to 0 for visualisation purposes
         end
-%       else
-%         P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the state
       end
 
       orientation = data(1, 18:21)';  % Google's orientation estimate.
