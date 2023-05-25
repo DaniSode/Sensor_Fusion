@@ -3,8 +3,8 @@ clear all; close all; clc
 run('startup.m')
 
 %% Switch to whatever filter wanted
-[xhat, meas] = filterTemplate;
-% [xhat, meas] = without_update;
+% [xhat, meas] = filterTemplate;
+[xhat, meas] = without_update;
 % [xhat, meas] = with_update;
 
 %% Use app on phone
@@ -18,7 +18,7 @@ orient = meas.orient;
 t_meas = meas.t;
 
 % Convert to euler angles
-real_angles = q2euler(orient);
+real_angles = q2euler(orient)*(pi/180);
 
 % Save states and covariance
 x = xhat.x;
@@ -36,17 +36,17 @@ subplot(3,1,1)
 plot(t_xhat, est_angles(1,:))
 hold on; grid on
 plot(t_meas, real_angles(1,:))
-title('X axis real vs estimation'); xlabel('Time-step'); ylabel('x value')
+title('Roll, real vs estimation'); xlabel('Time [s]'); ylabel('Angle [rad]')
 legend('Estimated', 'Real')
 subplot(3,1,2)
 plot(t_xhat, est_angles(2,:))
 hold on; grid on
 plot(t_meas, real_angles(2,:))
-title('Y axis real vs estimation'); xlabel('Time-step'); ylabel('y value')
+title('Pitch, real vs estimation'); xlabel('Time [s]'); ylabel('Angle [rad]')
 legend('Estimated', 'Real')
 subplot(3,1,3)
 plot(t_xhat, est_angles(3,:))
 hold on; grid on
 plot(t_meas, real_angles(3,:))
-title('Z axis real vs estimation'); xlabel('Time-step'); ylabel('z value')
+title('Yaw, real vs estimation'); xlabel('Time [s]'); ylabel('Angle [rad]')
 legend('Estimated', 'Real')
