@@ -101,7 +101,7 @@ hold on; grid on;
 plot(linspace(min(mag_data(2, :)), max(mag_data(2, :)), n), mvnpdf(linspace(min(mag_data(2, :)), max(mag_data(2, :)), n)', mean_mag(2), cov_mag(2)), 'r', 'linewidth', 1.5)
 title('Magnetometer data y')
 subplot(3,5,13)
-histogram(mag_data(3, :), bins, 'Normalization', 'pdf')
+histogram(mag_data(:, 3), bins, 'Normalization', 'pdf')
 hold on; grid on;
-plot(linspace(min(mag_data(3, :)), max(mag_data(3, :)), n), mvnpdf(linspace(min(mag_data(3, :)), max(mag_data(3, :)), n)', mean_mag(3), cov_mag(3)), 'r', 'linewidth', 1.5)
+plot(linspace(min(mag_data(:, 3)), max(mag_data(:, 3)), n), mvnpdf(linspace(min(mag_data(:, 3)), max(mag_data(:, 3)), n)', mean_mag(3), cov_mag(3)), 'r', 'linewidth', 1.5)
 title('Magnetometer data z')
