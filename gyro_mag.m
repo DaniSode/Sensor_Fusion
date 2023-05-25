@@ -33,14 +33,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   % Define constants gyro
   Rw = diag([0.1546e-4, 0.3164e-4, 0.01e-4]);
 
-  % Define constants acc
-  g0 = [0.6338; 0.2853; 9.8379];
-  L = norm(g0);
-  outlier_acc = 0.3; % Look for outliers 50 % larger and smaller of the acc measurement
-  ub_acc = L*(1 + outlier_acc);
-  lb_acc = L*(1 - outlier_acc);
-  Ra = diag([0.0002, 0.0001, 0.0011]);
-  
   % Define constants mag
   Rm = diag([0.1124, 0.1905, 0.1273]);
   m = [-0.7002; 10.8121; -43.4096];
@@ -51,11 +43,10 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   ub_mag = Lk*(1 + outlier_mag);
   lb_mag = Lk*(1 - outlier_mag);
 
-
   % Current filter state.
   x = [1; 0; 0 ;0];
   P = eye(nx, nx);
-  
+
   % Saved filter states.
   xhat = struct('t', zeros(1, 0),...
                 'x', zeros(nx, 0),...
@@ -66,7 +57,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
                 'gyr', zeros(3, 0),...
                 'mag', zeros(3, 0),...
                 'orient', zeros(4, 0));
-
   try
     %% Create data link
     server = StreamSensorDataReader(3400);
@@ -98,6 +88,11 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
         t0 = t;
       end
 
+      acc = data(1, 2:4)';
+      if ~any(isnan(acc))  % Acc measurements are available.
+        % Do something
+      end
+
       gyr = data(1, 5:7)';
       if ~any(isnan(gyr))  % Gyro measurements are available.
             [x, P] = tu_qw(x, P, gyr, t-t0-meas.t(end), Rw);
@@ -106,21 +101,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
             P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the next step
       end
 
-      % Set accOut to 1
-      accOut = 1;
-
-      acc = data(1, 2:4)';
-      if ~any(isnan(acc))  % Acc measurements are available.
-          L = norm(acc);
-          if ub_acc > L && lb_acc < L % To look for outlier and skip if that is the case
-            [x, P] = mu_g(x, P, acc, Ra, g0);
-            [x, P] = mu_normalizeQ(x, P);
-            accOut = 0;
-          end
-      else
-        P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the next step
-      end
-      
       % Set magOut to 1
       magOut = 1;
 
@@ -141,7 +121,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       % Visualize result
       if rem(counter, 10) == 0
         setOrientation(ownView, x(1:4));
-        ownView.setAccDist(accOut);
         ownView.setMagDist(magOut);
         title(ownView, 'OWN', 'FontSize', 16);
         if ~any(isnan(orientation))
@@ -167,7 +146,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       meas.mag(:, end+1) = mag;
       meas.orient(:, end+1) = orientation;
     end
-
   catch e
     fprintf(['Unsuccessful connecting to client!\n' ...
       'Make sure to start streaming from the phone *after*'...

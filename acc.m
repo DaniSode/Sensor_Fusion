@@ -26,10 +26,18 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   %% Filter settings
   t0 = [];  % Initial time (initialize on first data received)
   nx = 4;   % Assuming that you use q as state variable.
-
+    
   % Add your filter settings here.
-  Rw = diag([0.1861e-4, 0.0419e-4, 0.0075e-4]);
+  Some_random_noise = 0.01;
   
+  % Define constants acc
+  g0 = [0.6338; 0.2853; 9.8379];
+  L = norm(g0);
+  outlier_acc = 0.3; % Look for outliers 50 % larger and smaller of the acc measurement
+  ub_acc = L*(1 + outlier_acc);
+  lb_acc = L*(1 - outlier_acc);
+  Ra = diag([0.0002, 0.0001, 0.0011]);
+
   % Current filter state.
   x = [1; 0; 0 ;0];
   P = eye(nx, nx);
@@ -44,6 +52,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
                 'gyr', zeros(3, 0),...
                 'mag', zeros(3, 0),...
                 'orient', zeros(4, 0));
+
   try
     %% Create data link
     server = StreamSensorDataReader(3400);
@@ -74,29 +83,30 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       if isempty(t0)  % Initialize t0
         t0 = t;
       end
-      
-      Some_random_noise = 0.01;
+
+      % Set accOut to 1
+      accOut = 1;
+
+      acc = data(1, 2:4)';
+      if ~any(isnan(acc))  % Acc measurements are available.
+          L = norm(acc);
+          if ub_acc > L && lb_acc < L % To look for outlier and skip if that is the case
+            [x, P] = mu_g(x, P, acc, Ra, g0);
+            [x, P] = mu_normalizeQ(x, P);
+            accOut = 0;
+          end
+      else
+          P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the next step
+      end
 
       gyr = data(1, 5:7)';
       if ~any(isnan(gyr))  % Gyro measurements are available.
-            [x, P] = tu_qw(x, P, gyr, t, Rw);
-            [x, P] = mu_normalizeQ(x, P);
-      else
-            P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the next step
-      end
-      
-      outlier = 0.5; % Look for outliers 50 % larger and smaller of the acc measurement
-      acc = data(1, 2:4)';
-      if ~any(isnan(acc))  % Acc measurements are available.
-          if no% To look for outlier
-            [x, P] = mu_g(x, P, yacc, Ra, g0);
-            [x, P] = mu_normalizeQ(x, P);
-
+         % Do something
       end
       
       mag = data(1, 8:10)';
       if ~any(isnan(mag))  % Mag measurements are available.
-        % Do something
+         % Do something
       end
 
       orientation = data(1, 18:21)';  % Google's orientation estimate.
@@ -104,6 +114,8 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       % Visualize result
       if rem(counter, 10) == 0
         setOrientation(ownView, x(1:4));
+        ownView.setAccDist(accOut);
+        ownView.setAccDist(accOut);
         title(ownView, 'OWN', 'FontSize', 16);
         if ~any(isnan(orientation))
           if isempty(googleView)
@@ -128,6 +140,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       meas.mag(:, end+1) = mag;
       meas.orient(:, end+1) = orientation;
     end
+
   catch e
     fprintf(['Unsuccessful connecting to client!\n' ...
       'Make sure to start streaming from the phone *after*'...

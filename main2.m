@@ -13,7 +13,11 @@ run('startup.m')
 %% Switch to whatever filter wanted
 % [xhat, meas] = filterTemplate;
 % [xhat, meas] = gyro;
+% [xhat, meas] = acc;
+% [xhat, meas] = mag;
 % [xhat, meas] = gyro_acc;
+% [xhat, meas] = gyro_mag;
+% [xhat, meas] = acc_mag;
 % [xhat, meas] = gyro_acc_mag;
 
 

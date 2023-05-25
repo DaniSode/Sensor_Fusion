@@ -28,8 +28,9 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   nx = 4;   % Assuming that you use q as state variable.
 
   % Add your filter settings here.
-  % Define constants gyro
   Some_random_noise = 0.01;
+  
+  % Define constants gyro
   Rw = diag([0.1861e-4, 0.0419e-4, 0.0075e-4]);
   
   % Current filter state.
