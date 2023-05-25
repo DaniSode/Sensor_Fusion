@@ -28,8 +28,13 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   nx = 4;   % Assuming that you use q as state variable.
 
   % Add your filter settings here.
+  % Gyro
   Rw = diag([0.1861e-4, 0.0419e-4, 0.0075e-4]);
-  
+  % Acc
+  Ra = diag([0.0003, 0.0004, 0.0012]);
+  g0 = [0.0585; -0.1191; 9.7791];
+
+
   % Current filter state.
   x = [1; 0; 0 ;0];
   P = eye(nx, nx);
