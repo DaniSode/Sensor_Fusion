@@ -31,7 +31,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   Some_random_noise = 0.001;
 
   % Define constants gyro
-  Rw = diag([0.1546e-4, 0.3164e-4, 0.01e-4]);
+  Rw = diag([0.1546e-3, 0.3164e-3, 0.01e-3]);
 
   % Define constants acc
   g0 = [0.6338; 0.2853; 9.8379];
