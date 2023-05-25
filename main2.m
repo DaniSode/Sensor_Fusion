@@ -18,7 +18,7 @@ orient = meas.orient;
 t_meas = meas.t;
 
 % Convert to euler angles
-real_angles = q2euler(orient);
+real_angles = q2euler(orient)*(180/pi);
 
 % Save states and covariance
 x = xhat.x;
