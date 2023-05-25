@@ -57,7 +57,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
                 'orient', zeros(4, 0));
 
   try
-
     %% Create data link
     server = StreamSensorDataReader(3400);
     % Makes sure to resources are returned.
@@ -106,7 +105,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
             [x, P] = mu_normalizeQ(x, P);
             accOut = 0;
           end
-      end
       end
       
       mag = data(1, 8:10)';
