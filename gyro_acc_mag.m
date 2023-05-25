@@ -31,7 +31,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   Some_random_noise = 0.0001;
 
   % Define constants gyro
-  Rw = diag([0.1546e-4, 0.3164e-4, 0.01e-4]);
+  Rw = diag([0.1546e-4, 0.3164e-4, 0.01e-4]); % Process noise covariance matrix
 
   % Define constants acc
   g0 = [0.6338; 0.2853; 9.8379]; % Mean of acc data
@@ -42,14 +42,14 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   Ra = diag([0.0002, 0.0001, 0.0011]); % Process noise covariance matrix
   
   % Define constants mag
-  Rm = diag([0.1124, 0.1905, 0.1273]);
-  m = [-0.7002; 10.8121; -43.4096];
-  m0 = [0; sqrt(m(1)^2+m(2)^2); m(3)]; 
+  Rm = diag([0.1124, 0.1905, 0.1273]); % Process noise covariance matrix
+  m = [-0.7002; 10.8121; -43.4096]; % Mean of acc data
+  m0 = [0; sqrt(m(1)^2+m(2)^2); m(3)];  
   alpha = 0.01;
-  outlier_mag = 0.2;
-  Lk = norm(m0);
-  ub_mag = Lk*(1 + outlier_mag);
-  lb_mag = Lk*(1 - outlier_mag);
+  outlier_mag = 0.2; % Look for outliers 20 % larger and smaller of the acc measurement
+  Lk = norm(m0); 
+  ub_mag = Lk*(1 + outlier_mag); % Upper bound
+  lb_mag = Lk*(1 - outlier_mag); % Lower bound
 
 
   % Current filter state.

@@ -1,5 +1,5 @@
 %% Clear all
-clear all; close all ; clc
+clear all; close all; clc
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%           Main 2 code for project            %%
