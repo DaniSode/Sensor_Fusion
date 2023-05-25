@@ -102,7 +102,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       acc = data(1, 2:4)';
       if ~any(isnan(acc))  % Acc measurements are available.
           if ub > norm(acc) && lb < norm(acc) % To look for outlier and skip if that is the case
-            [x, P] = mu_g(x, P, yacc, Ra, g0);
+            [x, P] = mu_g(x, P, acc, Ra, g0);
             [x, P] = mu_normalizeQ(x, P);
             ownView.setAccDist(0)
           end
