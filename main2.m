@@ -1,5 +1,13 @@
-clear all; close all; clc
+%% Clear all
+clear all; close all ; clc
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%           Main 2 code for project            %%
+%%     Daniel Söderqvist and Swadesh Gandhi     %%
+%% SSY345 Sensor Fusion and Nonlinear Filtering %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Run startup file
 run('startup.m')
 
 %% Switch to whatever filter wanted

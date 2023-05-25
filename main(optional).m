@@ -1,6 +1,7 @@
 %% Clear all
 clear all; close all ; clc
 
+%% Optional %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%            Main code for project             %%
 %%     Daniel Söderqvist and Swadesh Gandhi     %%
