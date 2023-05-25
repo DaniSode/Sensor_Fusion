@@ -13,7 +13,7 @@ run('startup.m')
 
 [xhat, meas] = filterTemplate;
 acc_data = meas.acc;
-gyro_data = meas.gyro;
+gyro_data = meas.gyr;
 mag_data = meas.mag;
 t = meas.t;
 

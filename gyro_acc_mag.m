@@ -114,7 +114,8 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       
       mag = data(1, 8:10)';
       if ~any(isnan(mag))  % Mag measurements are available.
-        % Do something
+        [x, P] = mu_m(x, P, mag, m0, Rm);
+        [x, P] = mu_normalizeQ(x, P);
       end
 
       orientation = data(1, 18:21)';  % Google's orientation estimate.
