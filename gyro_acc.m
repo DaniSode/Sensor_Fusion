@@ -28,7 +28,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   nx = 4;   % Assuming that you use q as state variable.
 
   % Add your filter settings here.
-
+  Rw = diag([0.1861e-4, 0.0419e-4, 0.0075e-4]);
   
   % Current filter state.
   x = [1; 0; 0 ;0];
@@ -75,20 +75,29 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
         t0 = t;
       end
       
-      Some_random_noise = 0.001;
+      Some_random_noise = 0.01;
 
-      acc = data(1, 2:4)';
-      if ~any(isnan(acc))  % Acc measurements are available.
-        % Do something
-      end
       gyr = data(1, 5:7)';
       if ~any(isnan(gyr))  % Gyro measurements are available.
-            [x, P] = tu_qw(x, P, gyr, t-t0-meas.t(end), Rw);
+            [x, P] = tu_qw(x, P, gyr, t, Rw);
             [x, P] = mu_normalizeQ(x, P);
       else
-            P = P + eye(size(P,1))*Some_random_noise; % We add some covariance since we are more unsure about the next step
+            P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the next step
       end
-
+      
+      g = 9.81;
+      outlier = 0.5; % Look for outliers 50 % larger and smaller of the acc measurement
+      ub = g*(1+outlier);
+      lb = g*(1-outlier);
+      acc = data(1, 2:4)';
+      if ~any(isnan(acc))  % Acc measurements are available.
+          if ub > norm(acc) && lb < norm(acc) % To look for outlier and skip if that is the case
+            [x, P] = mu_g(x, P, yacc, Ra, g0);
+            [x, P] = mu_normalizeQ(x, P);
+          end
+      end
+      end
+      
       mag = data(1, 8:10)';
       if ~any(isnan(mag))  % Mag measurements are available.
         % Do something
