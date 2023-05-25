@@ -28,25 +28,25 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   nx = 4;   % Assuming that you use q as state variable.
 
   % Add your filter settings here.
-  Some_random_noise = 0.001;
+  Some_random_noise = 0.0001;
 
   % Define constants gyro
-  Rw = diag([0.1546e-3, 0.3164e-3, 0.01e-3]);
+  Rw = diag([0.1546e-4, 0.3164e-4, 0.01e-4]);
 
   % Define constants acc
-  g0 = [0.6338; 0.2853; 9.8379];
-  L = norm(g0);
-  outlier_acc = 0.3; % Look for outliers 50 % larger and smaller of the acc measurement
-  ub_acc = L*(1 + outlier_acc);
-  lb_acc = L*(1 - outlier_acc);
-  Ra = diag([0.0002, 0.0001, 0.0011]);
+  g0 = [0.6338; 0.2853; 9.8379]; % Mean of acc data
+  L = norm(g0); 
+  outlier_acc = 0.2; % Look for outliers 20 % larger and smaller of the acc measurement
+  ub_acc = L*(1 + outlier_acc); % Upper bound
+  lb_acc = L*(1 - outlier_acc); % Lower bound
+  Ra = diag([0.0002, 0.0001, 0.0011]); % Process noise covariance matrix
   
   % Define constants mag
   Rm = diag([0.1124, 0.1905, 0.1273]);
   m = [-0.7002; 10.8121; -43.4096];
   m0 = [0; sqrt(m(1)^2+m(2)^2); m(3)]; 
-  alpha = 0.05;
-  outlier_mag = 0.3;
+  alpha = 0.01;
+  outlier_mag = 0.2;
   Lk = norm(m0);
   ub_mag = Lk*(1 + outlier_mag);
   lb_mag = Lk*(1 - outlier_mag);
@@ -117,8 +117,8 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
             [x, P] = mu_normalizeQ(x, P);   % Normalize the quaternion
             accOut = 0;
           end
-      else
-        P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the state
+%       else
+%         P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the state
       end
       
       % Set magOut to 1
@@ -132,8 +132,8 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
             [x, P] = mu_normalizeQ(x, P);   % Normalize the quaternion
             magOut = 0;     % Set magOut to 0 for visualisation purposes
         end
-      else
-        P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the state
+%       else
+%         P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the state
       end
 
       orientation = data(1, 18:21)';  % Google's orientation estimate.
