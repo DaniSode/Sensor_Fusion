@@ -37,7 +37,7 @@ figure('Position', [size(1)*0.1, size(2)*0.06, size(1)*0.5, size(2)*0.85]);
 subplot(3,1,1)
 plot(t_xhat, est_angles(1,:))
 hold on; grid on
-plot(t_meas, real_angles(1,:))
+plot(t_meas, real_angles(1,:)+90)
 title('Roll, real vs estimation'); xlabel('Time [s]'); ylabel('Angle [degrees]')
 legend('Estimated', 'Real')
 subplot(3,1,2)

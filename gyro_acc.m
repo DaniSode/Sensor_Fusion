@@ -34,7 +34,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
 
   % Define constants acc
   g = 9.81;
-  outlier_acc = 0.5; % Look for outliers 50 % larger and smaller of the acc measurement
+  outlier_acc = 0.3; % Look for outliers 50 % larger and smaller of the acc measurement
   ub = g*(1 + outlier_acc);
   lb = g*(1 - outlier_acc);
   Ra = diag([0.0003, 0.0004, 0.0012]);
@@ -89,7 +89,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
 
       gyr = data(1, 5:7)';
       if ~any(isnan(gyr))  % Gyro measurements are available.
-            [x, P] = tu_qw(x, P, gyr, t, Rw);
+            [x, P] = tu_qw(x, P, gyr, t-t0-meas.t(end), Rw);
             [x, P] = mu_normalizeQ(x, P);
       else
             P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the next step
@@ -142,6 +142,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       meas.mag(:, end+1) = mag;
       meas.orient(:, end+1) = orientation;
     end
+
   catch e
     fprintf(['Unsuccessful connecting to client!\n' ...
       'Make sure to start streaming from the phone *after*'...

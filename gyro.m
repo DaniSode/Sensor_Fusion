@@ -46,6 +46,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
                 'gyr', zeros(3, 0),...
                 'mag', zeros(3, 0),...
                 'orient', zeros(4, 0));
+  
   try
     %% Create data link
     server = StreamSensorDataReader(3400);
@@ -84,7 +85,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       
       gyr = data(1, 5:7)';
       if ~any(isnan(gyr))  % Gyro measurements are available.
-            [x, P] = tu_qw(x, P, gyr, t, Rw);
+            [x, P] = tu_qw(x, P, gyr, t-t0-meas.t(end), Rw);
             [x, P] = mu_normalizeQ(x, P);
       else
             P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the next step
