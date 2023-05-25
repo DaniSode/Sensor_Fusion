@@ -56,22 +56,22 @@ plot(t, mag_data)
 legend('x','y','z')
 title('Magnetometer'); xlabel('Time [s]'); ylabel('Sensor reading value')
 axis('tight')
-sgtitle('When the phone is moving', 'fontsize',20)
+sgtitle('Sensor data', 'fontsize',20)
 
 subplot(3,5,1)
 histogram(acc_data(:, 1), bins, 'Normalization', 'pdf')
 hold on; grid on;
-plot(linspace(min(acc_data(:, 1)), max(acc_data(:, 1)), n), mvnpdf(linspace(min(acc_data(:, 1)), max(acc_data(:, 1)), n)', mean_acc(1), cov_acc(1)), 'r', 'linewidth', 1.5)
+% plot(linspace(min(acc_data(:, 1)), max(acc_data(:, 1)), n), mvnpdf(linspace(min(acc_data(:, 1)), max(acc_data(:, 1)), n)', mean_acc(1), cov_acc(1)), 'r', 'linewidth', 1.5)
 title('Accelerometer data x')
 subplot(3,5,2)
 histogram(acc_data(:, 2), bins, 'Normalization', 'pdf')
 hold on; grid on;
-plot(linspace(min(acc_data(:, 2)), max(acc_data(:, 2)), n), mvnpdf(linspace(min(acc_data(:, 2)), max(acc_data(:, 2)), n)', mean_acc(2), cov_acc(2)), 'r', 'linewidth', 1.5)
+% plot(linspace(min(acc_data(:, 2)), max(acc_data(:, 2)), n), mvnpdf(linspace(min(acc_data(:, 2)), max(acc_data(:, 2)), n)', mean_acc(2), cov_acc(2)), 'r', 'linewidth', 1.5)
 title('Accelerometer data y')
 subplot(3,5,3)
 histogram(acc_data(:, 3), bins, 'Normalization', 'pdf')
 hold on; grid on;
-plot(linspace(min(acc_data(:, 3)), max(acc_data(:, 3)), n), mvnpdf(linspace(min(acc_data(:, 3)), max(acc_data(:, 3)), n)', mean_acc(3), cov_acc(3)), 'r', 'linewidth', 1.5)
+% plot(linspace(min(acc_data(:, 3)), max(acc_data(:, 3)), n), mvnpdf(linspace(min(acc_data(:, 3)), max(acc_data(:, 3)), n)', mean_acc(3), cov_acc(3)), 'r', 'linewidth', 1.5)
 title('Accelerometer data z')
 
 subplot(3,5,6)
