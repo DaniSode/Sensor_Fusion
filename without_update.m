@@ -33,7 +33,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   % Current filter state.
   x = [1; 0; 0 ;0];
   P = eye(nx, nx);
-
+  
   % Saved filter states.
   xhat = struct('t', zeros(1, 0),...
                 'x', zeros(nx, 0),...
@@ -74,6 +74,8 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       if isempty(t0)  % Initialize t0
         t0 = t;
       end
+      
+      Some_random_noise = 0.01;
 
       acc = data(1, 2:4)';
       if ~any(isnan(acc))  % Acc measurements are available.
@@ -83,6 +85,8 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       if ~any(isnan(gyr))  % Gyro measurements are available.
         [x, P] = tu_qw(x, P, gyr, t-t0-meas.t(end), Rw);
         [x, P] = mu_normalizeQ(x, P);
+      else
+          P = P + eye(size(P,1))*Some_random_noise; % We add some covariance since we are more unsure about the next step
       end
 
       mag = data(1, 8:10)';
