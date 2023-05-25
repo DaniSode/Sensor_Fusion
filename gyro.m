@@ -28,7 +28,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   nx = 4;   % Assuming that you use q as state variable.
 
   % Add your filter settings here.
-  Some_random_noise = 0.01;
+  Some_random_noise = 0.01; 
   
   % Define constants gyro
   Rw = diag([0.1861e-4, 0.0419e-4, 0.0075e-4]);
@@ -86,8 +86,8 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       
       gyr = data(1, 5:7)';
       if ~any(isnan(gyr))  % Gyro measurements are available.
-            [x, P] = tu_qw(x, P, gyr, t-t0-meas.t(end), Rw);
-            [x, P] = mu_normalizeQ(x, P);
+            [x, P] = tu_qw(x, P, gyr, t-t0-meas.t(end), Rw); % Estimate the states and covariance
+            [x, P] = mu_normalizeQ(x, P); % Normalize the quaternion
       else
             P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the next step
       end
