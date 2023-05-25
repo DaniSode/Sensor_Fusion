@@ -28,6 +28,8 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   nx = 4;   % Assuming that you use q as state variable.
 
   % Add your filter settings here.
+  % Define constants gyro
+  Some_random_noise = 0.01;
   Rw = diag([0.1861e-4, 0.0419e-4, 0.0075e-4]);
   
   % Current filter state.
@@ -75,12 +77,11 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
         t0 = t;
       end
       
-      Some_random_noise = 0.01;
-
       acc = data(1, 2:4)';
       if ~any(isnan(acc))  % Acc measurements are available.
         % Do something
       end
+      
       gyr = data(1, 5:7)';
       if ~any(isnan(gyr))  % Gyro measurements are available.
             [x, P] = tu_qw(x, P, gyr, t, Rw);

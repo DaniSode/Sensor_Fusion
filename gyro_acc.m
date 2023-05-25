@@ -28,9 +28,15 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   nx = 4;   % Assuming that you use q as state variable.
 
   % Add your filter settings here.
-  % Gyro
+  % Define constants gyro
+  Some_random_noise = 0.01;
   Rw = diag([0.1861e-4, 0.0419e-4, 0.0075e-4]);
-  % Acc
+
+  % Define constants acc
+  g = 9.81;
+  outlier_acc = 0.5; % Look for outliers 50 % larger and smaller of the acc measurement
+  ub = g*(1 + outlier_acc);
+  lb = g*(1 - outlier_acc);
   Ra = diag([0.0003, 0.0004, 0.0012]);
   g0 = [0.0585; -0.1191; 9.7791];
 
@@ -49,7 +55,9 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
                 'gyr', zeros(3, 0),...
                 'mag', zeros(3, 0),...
                 'orient', zeros(4, 0));
+
   try
+
     %% Create data link
     server = StreamSensorDataReader(3400);
     % Makes sure to resources are returned.
@@ -79,8 +87,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       if isempty(t0)  % Initialize t0
         t0 = t;
       end
-      
-      Some_random_noise = 0.01;
 
       gyr = data(1, 5:7)';
       if ~any(isnan(gyr))  % Gyro measurements are available.
@@ -89,22 +95,16 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       else
             P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the next step
       end
-      
-      % Define constants
-      g = 9.81;
-      outlier = 0.5; % Look for outliers 50 % larger and smaller of the acc measurement
-      ub = g*(1+outlier);
-      lb = g*(1-outlier);
 
       % Set accOut to 1
-      ownView.setAccDist(1)
+      accOut = 1;
 
       acc = data(1, 2:4)';
       if ~any(isnan(acc))  % Acc measurements are available.
           if ub > norm(acc) && lb < norm(acc) % To look for outlier and skip if that is the case
             [x, P] = mu_g(x, P, acc, Ra, g0);
             [x, P] = mu_normalizeQ(x, P);
-            ownView.setAccDist(0)
+            accOut = 0;
           end
       end
       end
@@ -119,6 +119,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       % Visualize result
       if rem(counter, 10) == 0
         setOrientation(ownView, x(1:4));
+        ownView.setAccDist(accOut);
         title(ownView, 'OWN', 'FontSize', 16);
         if ~any(isnan(orientation))
           if isempty(googleView)
