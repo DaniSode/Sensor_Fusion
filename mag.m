@@ -30,11 +30,15 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   % Add your filter settings here.
 
   % Define constants mag
-  Rm = diag([0.1124, 0.1905, 0.1273]);
-  m = [-0.7002; 10.8121; -43.4096];
+  Rm = [0.1049, 0.0079, -0.0037;
+        0.0079, 0.0876, -0.0046;
+       -0.0037, -0.0046, 0.1097];
+  m = [-2.5126;
+        10.2677;
+       -42.2517];
   m0 = [0; sqrt(m(1)^2+m(2)^2); m(3)]; 
   alpha = 0.02;
-  outlier_mag = 0.1;
+  outlier_mag = 0.2;
   Lk = norm(m0);
   ub_mag = Lk*(1 + outlier_mag);
   lb_mag = Lk*(1 - outlier_mag);
@@ -93,8 +97,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
         % Do something
       end
 
-      % Set magOut to 1
-      magOut = 1;
 
       mag = data(1, 8:10)';
       if ~any(isnan(mag))  % Mag measurements are available.
@@ -102,7 +104,9 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
         if ub_mag > Lk && lb_mag < Lk % To look for outlier and skip if that is the case
             [x, P] = mu_m(x, P, mag, m0, Rm);
             [x, P] = mu_normalizeQ(x, P);
-            magOut = 0;
+            ownView.setMagDist(0);
+        else
+            ownView.setMagDist(1);
         end
       end
 
@@ -111,7 +115,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       % Visualize result
       if rem(counter, 10) == 0
         setOrientation(ownView, x(1:4));
-        ownView.setMagDist(magOut);
         title(ownView, 'OWN', 'FontSize', 16);
         if ~any(isnan(orientation))
           if isempty(googleView)

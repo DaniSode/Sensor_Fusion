@@ -109,8 +109,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
         t0 = t;
       end
       
-      % Set accOut to 1
-      ownView.setAccDist(1);
 
       acc = data(1, 2:4)';
       if ~any(isnan(acc))  % Acc measurements are available.
@@ -119,6 +117,8 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
             [x, P] = mu_g(x, P, acc, Ra, g0);   % Estimate the states and covariance
             [x, P] = mu_normalizeQ(x, P);   % Normalize the quaternion
             ownView.setAccDist(0);
+          else
+            ownView.setAccDist(1);
           end
       end
 
@@ -130,9 +130,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
             P = P + ones(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the state
       end
 
-      % Set magOut to 1
-      ownView.setMagDist(1);
-
       mag = data(1, 8:10)';
       if ~any(isnan(mag))  % Mag measurements are available.
         Lk = (1 - alpha)*Lk + alpha*norm(mag);  
@@ -140,6 +137,8 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
             [x, P] = mu_m(x, P, mag, m0, Rm);   % Estimate the states and covariance
             [x, P] = mu_normalizeQ(x, P);   % Normalize the quaternion
             ownView.setMagDist(0);    % Set magOut to 0 for visualisation purposes
+        else
+            ownView.setMagDist(1); % Set magOut to 1 for visualisation purposes if there is an outlier
         end
       end
 

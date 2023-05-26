@@ -87,16 +87,15 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
         t0 = t;
       end
 
-      % Set accOut to 1
-      accOut = 1;
-
       acc = data(1, 2:4)';
       if ~any(isnan(acc))  % Acc measurements are available.
           L = norm(acc);
           if ub_acc > L && lb_acc < L % To look for outlier and skip if that is the case
             [x, P] = mu_g(x, P, acc, Ra, g0);
             [x, P] = mu_normalizeQ(x, P);
-            accOut = 0;
+            ownView.setAccDist(0);
+          else
+            ownView.setAccDist(1);
           end
       end
 
@@ -115,8 +114,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       % Visualize result
       if rem(counter, 10) == 0
         setOrientation(ownView, x(1:4));
-        ownView.setAccDist(accOut);
-        ownView.setAccDist(accOut);
         title(ownView, 'OWN', 'FontSize', 16);
         if ~any(isnan(orientation))
           if isempty(googleView)

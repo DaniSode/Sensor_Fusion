@@ -95,9 +95,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
         t0 = t;
       end
 
-      % Set accOut to 1
-      ownView.setAccDist(1);
-
       acc = data(1, 2:4)';
       if ~any(isnan(acc))  % Acc measurements are available.
           L = norm(acc);
@@ -105,6 +102,8 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
             [x, P] = mu_g(x, P, acc, Ra, g0);
             [x, P] = mu_normalizeQ(x, P);
             ownView.setAccDist(0);
+          else
+            ownView.setAccDist(1);
           end
       end
 

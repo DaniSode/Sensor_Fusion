@@ -92,7 +92,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
             [x, P] = tu_qw(x, P, gyr, timestep, Rw); % Estimate the states and covariance
             [x, P] = mu_normalizeQ(x, P); % Normalize the quaternion
       else
-            P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the next step
+            P = P + ones(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the next step
       end
 
       mag = data(1, 8:10)';

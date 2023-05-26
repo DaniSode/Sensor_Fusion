@@ -111,6 +111,8 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
             [x, P] = mu_g(x, P, acc, Ra, g0);
             [x, P] = mu_normalizeQ(x, P);
             ownView.setAccDist(0);
+          else
+            ownView.setAccDist(1);
           end
       end
 
@@ -119,9 +121,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
         % Do something
       end
 
-      % Set magOut to 1
-      ownView.setMagDist(1);
-
       mag = data(1, 8:10)';
       if ~any(isnan(mag))  % Mag measurements are available.
         Lk = (1 - alpha)*Lk + alpha*norm(mag);
@@ -129,6 +128,8 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
             [x, P] = mu_m(x, P, mag, m0, Rm);
             [x, P] = mu_normalizeQ(x, P);
             ownView.setMagDist(0);
+        else
+            ownView.setMagDist(1);
         end
       end
 
