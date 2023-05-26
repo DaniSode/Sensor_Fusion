@@ -1,3 +1,10 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%           Filter code for project            %%
+%%     Daniel Söderqvist and Swadesh Gandhi     %%
+%% SSY345 Sensor Fusion and Nonlinear Filtering %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
 % FILTERTEMPLATE  Filter template
 %
