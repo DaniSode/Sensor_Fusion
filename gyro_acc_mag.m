@@ -32,25 +32,35 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   timestep = 1/100;
 
   % Define constants gyro
-  Rw = diag([0.1546e-4, 0.3164e-4, 0.01e-4]); % Process noise covariance matrix
+  Rw = 1.0e-04*[0.1007, 0.0026, 0.0205;
+                0.0026, 0.1258, 0.0120;
+                0.0205, 0.0120, 0.1109]; % Process noise covariance matrix
 
   % Define constants acc
-  g0 = [0.6338; 0.2853; 9.8379]; % Mean of acc data
-  L = norm(g0); 
+  g0 = [0.5190;
+        0.1883;
+        9.8432];
+  L = norm(g0);
   outlier_acc = 0.2; % Look for outliers 20 % larger and smaller of the acc measurement
-  ub_acc = L*(1 + outlier_acc); % Upper bound
-  lb_acc = L*(1 - outlier_acc); % Lower bound
-  Ra = diag([0.0002, 0.0001, 0.0011]); % Process noise covariance matrix
+  ub_acc = L*(1 + outlier_acc);
+  lb_acc = L*(1 - outlier_acc);
+  Ra = 1.0e-03*[0.0973, 0.0015, 0.0025;
+                0.0015, 0.0921, 0.0002;
+                0.0025, 0.0002, 0.1133];
   
   % Define constants mag
-  Rm = diag([0.1124, 0.1905, 0.1273]); % Process noise covariance matrix
-  m = [-0.7002; 10.8121; -43.4096]; % Mean of acc data
-  m0 = [0; sqrt(m(1)^2+m(2)^2); m(3)];  
+  Rm = [0.1049, 0.0079, -0.0037;
+        0.0079, 0.0876, -0.0046;
+       -0.0037, -0.0046, 0.1097];
+  m = [-2.5126;
+        10.2677;
+       -42.2517];
+  m0 = [0; sqrt(m(1)^2+m(2)^2); m(3)]; 
   alpha = 0.02;
-  outlier_mag = 0.1; % Look for outliers 20 % larger and smaller of the acc measurement
-  Lk = norm(m0); 
-  ub_mag = Lk*(1 + outlier_mag); % Upper bound
-  lb_mag = Lk*(1 - outlier_mag); % Lower bound
+  outlier_mag = 0.2;
+  Lk = norm(m0);
+  ub_mag = Lk*(1 + outlier_mag);
+  lb_mag = Lk*(1 - outlier_mag);
 
 
   % Current filter state.
@@ -104,7 +114,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
             [x, P] = tu_qw(x, P, gyr, timestep, Rw);    % Estimate the states and covariance
             [x, P] = mu_normalizeQ(x, P);   % Normalize the quaternion
       else
-            P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the state
+            P = P + ones(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the state
       end
 
       % Set accOut to 1

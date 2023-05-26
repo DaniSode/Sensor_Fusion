@@ -32,7 +32,9 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   timestep = 1/100;
 
   % Define constants gyro
-  Rw = diag([0.1546e-4, 0.3164e-4, 0.01e-4]);
+  Rw = 1.0e-04*[0.1007, 0.0026, 0.0205;
+                0.0026, 0.1258, 0.0120;
+                0.0205, 0.0120, 0.1109];
   
   % Current filter state.
   x = [1; 0; 0 ;0];

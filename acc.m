@@ -30,12 +30,16 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   % Add your filter settings here.
 
   % Define constants acc
-  g0 = [0.6338; 0.2853; 9.8379];
+  g0 = [0.5190;
+        0.1883;
+        9.8432];
   L = norm(g0);
   outlier_acc = 0.2; % Look for outliers 50 % larger and smaller of the acc measurement
   ub_acc = L*(1 + outlier_acc);
   lb_acc = L*(1 - outlier_acc);
-  Ra = diag([0.0002, 0.0001, 0.0011]);
+  Ra = 1.0e-03*[0.0973, 0.0015, 0.0025;
+                0.0015, 0.0921, 0.0002;
+                0.0025, 0.0002, 0.1133];
 
   % Current filter state.
   x = [1; 0; 0 ;0];
