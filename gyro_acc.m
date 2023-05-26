@@ -95,16 +95,8 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
         t0 = t;
       end
 
-      gyr = data(1, 5:7)';
-      if ~any(isnan(gyr))  % Gyro measurements are available.
-            [x, P] = tu_qw(x, P, gyr, timestep, Rw);
-            [x, P] = mu_normalizeQ(x, P);
-      else
-            P = P + ones(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the next step
-      end
-
       % Set accOut to 1
-      accOut = 1;
+      ownView.setAccDist(1);
 
       acc = data(1, 2:4)';
       if ~any(isnan(acc))  % Acc measurements are available.
@@ -112,8 +104,16 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
           if ub_acc > L && lb_acc < L % To look for outlier and skip if that is the case
             [x, P] = mu_g(x, P, acc, Ra, g0);
             [x, P] = mu_normalizeQ(x, P);
-            accOut = 0;
+            ownView.setAccDist(0);
           end
+      end
+
+      gyr = data(1, 5:7)';
+      if ~any(isnan(gyr))  % Gyro measurements are available.
+            [x, P] = tu_qw(x, P, gyr, timestep, Rw);
+            [x, P] = mu_normalizeQ(x, P);
+      else
+            P = P + ones(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the next step
       end
       
       mag = data(1, 8:10)';
@@ -126,7 +126,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       % Visualize result
       if rem(counter, 10) == 0
         setOrientation(ownView, x(1:4));
-        ownView.setAccDist(accOut);
         title(ownView, 'OWN', 'FontSize', 16);
         if ~any(isnan(orientation))
           if isempty(googleView)
