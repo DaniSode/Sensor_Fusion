@@ -65,47 +65,47 @@ sgtitle('Sensor data', 'fontsize',20)
 subplot(3,5,1)
 histogram(acc_data(1, :), bins, 'Normalization', 'pdf')
 hold on; grid on;
-plot(linspace(min(acc_data(1, :)), max(acc_data(1, :)), n), mvnpdf(linspace(min(acc_data(1, :)), max(acc_data(1, :)), n)', mean_acc(1), cov_acc(1)), 'r', 'linewidth', 1.5)
+% plot(linspace(min(acc_data(1, :)), max(acc_data(1, :)), n), mvnpdf(linspace(min(acc_data(1, :)), max(acc_data(1, :)), n)', mean_acc(1), cov_acc(1)), 'r', 'linewidth', 1.5)
 title('Accelerometer data x')
 subplot(3,5,2)
 histogram(acc_data(2, :), bins, 'Normalization', 'pdf')
 hold on; grid on;
-plot(linspace(min(acc_data(2, :)), max(acc_data(2, :)), n), mvnpdf(linspace(min(acc_data(2, :)), max(acc_data(2, :)), n)', mean_acc(2), cov_acc(2)), 'r', 'linewidth', 1.5)
+% plot(linspace(min(acc_data(2, :)), max(acc_data(2, :)), n), mvnpdf(linspace(min(acc_data(2, :)), max(acc_data(2, :)), n)', mean_acc(2), cov_acc(2)), 'r', 'linewidth', 1.5)
 title('Accelerometer data y')
 subplot(3,5,3)
 histogram(acc_data(3, :), bins, 'Normalization', 'pdf')
 hold on; grid on;
-plot(linspace(min(acc_data(3, :)), max(acc_data(3, :)), n), mvnpdf(linspace(min(acc_data(3, :)), max(acc_data(3, :)), n)', mean_acc(3), cov_acc(3)), 'r', 'linewidth', 1.5)
+% plot(linspace(min(acc_data(3, :)), max(acc_data(3, :)), n), mvnpdf(linspace(min(acc_data(3, :)), max(acc_data(3, :)), n)', mean_acc(3), cov_acc(3)), 'r', 'linewidth', 1.5)
 title('Accelerometer data z')
 
 subplot(3,5,6)
 histogram(gyro_data(1, :), bins, 'Normalization', 'pdf')
 hold on; grid on;
-plot(linspace(min(gyro_data(1, :)), max(gyro_data(1, :)), n), mvnpdf(linspace(min(gyro_data(1, :)), max(gyro_data(1, :)), n)', mean_gyro(1), cov_gyro(1)), 'r', 'linewidth', 1.5)
+% plot(linspace(min(gyro_data(1, :)), max(gyro_data(1, :)), n), mvnpdf(linspace(min(gyro_data(1, :)), max(gyro_data(1, :)), n)', mean_gyro(1), cov_gyro(1)), 'r', 'linewidth', 1.5)
 title('Gyroscope data x')
 subplot(3,5,7)
 histogram(gyro_data(2, :), bins, 'Normalization', 'pdf')
 hold on; grid on;
-plot(linspace(min(gyro_data(2, :)), max(gyro_data(2, :)), n), mvnpdf(linspace(min(gyro_data(2, :)), max(gyro_data(2, :)), n)', mean_gyro(2), cov_gyro(2)), 'r', 'linewidth', 1.5)
+% plot(linspace(min(gyro_data(2, :)), max(gyro_data(2, :)), n), mvnpdf(linspace(min(gyro_data(2, :)), max(gyro_data(2, :)), n)', mean_gyro(2), cov_gyro(2)), 'r', 'linewidth', 1.5)
 title('Gyroscope data y')
 subplot(3,5,8)
 histogram(gyro_data(3, :), bins, 'Normalization', 'pdf')
 hold on; grid on;
-plot(linspace(min(gyro_data(3, :)), max(gyro_data(3, :)), n), mvnpdf(linspace(min(gyro_data(3, :)), max(gyro_data(3, :)), n)', mean_gyro(3), cov_gyro(3)), 'r', 'linewidth', 1.5)
+% plot(linspace(min(gyro_data(3, :)), max(gyro_data(3, :)), n), mvnpdf(linspace(min(gyro_data(3, :)), max(gyro_data(3, :)), n)', mean_gyro(3), cov_gyro(3)), 'r', 'linewidth', 1.5)
 title('Gyroscope data z')
 
 subplot(3,5,11)
 histogram(mag_data(1, :), bins, 'Normalization', 'pdf')
 hold on; grid on;
-plot(linspace(min(mag_data(1, :)), max(mag_data(1, :)), n), mvnpdf(linspace(min(mag_data(1, :)), max(mag_data(1, :)), n)', mean_mag(1), cov_mag(1)), 'r', 'linewidth', 1.5)
+% plot(linspace(min(mag_data(1, :)), max(mag_data(1, :)), n), mvnpdf(linspace(min(mag_data(1, :)), max(mag_data(1, :)), n)', mean_mag(1), cov_mag(1)), 'r', 'linewidth', 1.5)
 title('Magnetometer data x')
 subplot(3,5,12)
 histogram(mag_data(2, :), bins, 'Normalization', 'pdf')
 hold on; grid on;
-plot(linspace(min(mag_data(2, :)), max(mag_data(2, :)), n), mvnpdf(linspace(min(mag_data(2, :)), max(mag_data(2, :)), n)', mean_mag(2), cov_mag(2)), 'r', 'linewidth', 1.5)
+% plot(linspace(min(mag_data(2, :)), max(mag_data(2, :)), n), mvnpdf(linspace(min(mag_data(2, :)), max(mag_data(2, :)), n)', mean_mag(2), cov_mag(2)), 'r', 'linewidth', 1.5)
 title('Magnetometer data y')
 subplot(3,5,13)
 histogram(mag_data(3, :), bins, 'Normalization', 'pdf')
 hold on; grid on;
-plot(linspace(min(mag_data(3, :)), max(mag_data(3, :)), n), mvnpdf(linspace(min(mag_data(3, :)), max(mag_data(3, :)), n)', mean_mag(3), cov_mag(3)), 'r', 'linewidth', 1.5)
+% plot(linspace(min(mag_data(3, :)), max(mag_data(3, :)), n), mvnpdf(linspace(min(mag_data(3, :)), max(mag_data(3, :)), n)', mean_mag(3), cov_mag(3)), 'r', 'linewidth', 1.5)
 title('Magnetometer data z')
