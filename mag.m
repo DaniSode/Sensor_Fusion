@@ -37,7 +37,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
         10.2677;
        -42.2517];
   m0 = [0; sqrt(m(1)^2+m(2)^2); m(3)]; 
-  alpha = 0.02;
+  alpha = 0.1;
   outlier_mag = 0.2;
   Lk = norm(m0);
   ub_mag = Lk*(1 + outlier_mag);
@@ -96,7 +96,6 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
       if ~any(isnan(gyr))  % Gyro measurements are available.
         % Do something
       end
-
 
       mag = data(1, 8:10)';
       if ~any(isnan(mag))  % Mag measurements are available.
