@@ -32,15 +32,21 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   timestep = 1/100;
 
   % Define constants gyro
-  Rw = diag([0.1546e-4, 0.3164e-4, 0.01e-4]);
+  Rw = 1.0e-05*[0.1007, 0.0026, 0.0205;
+                0.0026, 0.1258, 0.0120;
+                0.0205, 0.0120, 0.1109];
 
   % Define constants acc
-  g0 = [0.6338; 0.2853; 9.8379];
+  g0 = [0.5190;
+        0.1883;
+        9.8432];
   L = norm(g0);
   outlier_acc = 0.2; % Look for outliers 20 % larger and smaller of the acc measurement
   ub_acc = L*(1 + outlier_acc);
   lb_acc = L*(1 - outlier_acc);
-  Ra = diag([0.0002, 0.0001, 0.0011]);
+  Ra = 1.0e-03*[0.0973, 0.0015, 0.0025;
+                0.0015, 0.0921, 0.0002;
+                0.0025, 0.0002, 0.1133];
 
 
   % Current filter state.
