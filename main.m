@@ -26,9 +26,9 @@ mean_mag = mean(mag_data(:, ~any(isnan(mag_data), 1)), 2);
 % cov_gyro = [cov(gyro_data(1, ~any(isnan(gyro_data), 1))), cov(gyro_data(2, ~any(isnan(gyro_data), 1))), cov(gyro_data(3, ~any(isnan(gyro_data), 1)))];
 % cov_mag = [cov(mag_data(1, ~any(isnan(mag_data), 1))), cov(mag_data(2, ~any(isnan(mag_data), 1))), cov(mag_data(3, ~any(isnan(mag_data), 1)))];
 
-cov_acc = cov(acc_data(:, ~any(isnan(acc_data), 1)));
-cov_gyro = cov(gyro_data(:, ~any(isnan(gyro_data), 1)));
-cov_mag = cov(mag_data(:, ~any(isnan(mag_data), 1)));
+cov_acc = cov(acc_data(:, ~any(isnan(acc_data), 1))');
+cov_gyro = cov(gyro_data(:, ~any(isnan(gyro_data), 1))');
+cov_mag = cov(mag_data(:, ~any(isnan(mag_data), 1))');
 
 fprintf('Mean for the accelerometer data when stable in x, y and z respective =\n\n'); disp(mean_acc)
 fprintf('Mean for the gyroscope data when stable in x, y and z respective =\n\n'); disp(mean_gyro)
