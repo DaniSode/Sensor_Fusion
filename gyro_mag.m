@@ -29,7 +29,8 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
 
   % Add your filter settings here.
   Some_random_noise = 0.0001; 
-
+  timestep = 1/100;
+    
   % Define constants gyro
   Rw = diag([0.1546e-4, 0.3164e-4, 0.01e-4]);
 
@@ -95,7 +96,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
 
       gyr = data(1, 5:7)';
       if ~any(isnan(gyr))  % Gyro measurements are available.
-            [x, P] = tu_qw(x, P, gyr, t-t0-meas.t(end), Rw);
+            [x, P] = tu_qw(x, P, gyr, timestep, Rw);
             [x, P] = mu_normalizeQ(x, P);
       else
             P = P + eye(nx, nx)*Some_random_noise; % We add some covariance since we are more unsure about the next step

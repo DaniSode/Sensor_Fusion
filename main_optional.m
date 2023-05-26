@@ -87,9 +87,13 @@ mean_acc_still = mean(acc_data_still);
 mean_gyro_still = mean(gyro_data_still);
 mean_mag_still = mean(mag_data_still);
 
-cov_acc_still = [cov(acc_data_still(:,1)), cov(acc_data_still(:,2)), cov(acc_data_still(:,3))];
-cov_gyro_still = [cov(gyro_data_still(:,1)), cov(gyro_data_still(:,2)), cov(gyro_data_still(:,3))];
-cov_mag_still = [cov(mag_data_still(:,1)), cov(mag_data_still(:,2)), cov(mag_data_still(:,3))];
+% cov_acc_still = [cov(acc_data_still(:,1)), cov(acc_data_still(:,2)), cov(acc_data_still(:,3))];
+% cov_gyro_still = [cov(gyro_data_still(:,1)), cov(gyro_data_still(:,2)), cov(gyro_data_still(:,3))];
+% cov_mag_still = [cov(mag_data_still(:,1)), cov(mag_data_still(:,2)), cov(mag_data_still(:,3))];
+
+cov_acc_still = cov(acc_data_still);
+cov_gyro_still = cov(gyro_data_still);
+cov_mag_still = cov(mag_data_still);
 
 fprintf('\n\nMean for the accelerometer data when still in x, y and z respective =\n\n'); disp(mean_acc_still)
 fprintf('Mean for the gyroscope data when still in x, y and z respective =\n\n'); disp(mean_gyro_still)

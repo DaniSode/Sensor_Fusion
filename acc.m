@@ -28,7 +28,7 @@ function [xhat, meas] = filterTemplate(calAcc, calGyr, calMag)
   nx = 4;   % Assuming that you use q as state variable.
     
   % Add your filter settings here.
-  
+
   % Define constants acc
   g0 = [0.6338; 0.2853; 9.8379];
   L = norm(g0);
